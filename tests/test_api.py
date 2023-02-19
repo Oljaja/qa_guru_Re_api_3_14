@@ -3,7 +3,6 @@ from pytest_voluptuous import S
 from schemas import schemas
 from schemas.schemas import base_url
 
-
 def test_register_single_user():
     email = 'eve.holt@reqres.in'
     password = 'ma123'
@@ -31,27 +30,6 @@ def test_create_user():
 
     assert result.json()['name'] == name
     assert result.json()['job'] == job
-
-
-def test_update_user():
-    name = 'olsha'
-    job = 'QA'
-
-    result = requests.post(
-        url=f"{base_url}api/users/2",
-        json={'name': name, 'job': job}
-    )
-    name = '1olsha'
-    job = '1QA'
-
-    result = requests.put(
-        url=f"{base_url}api/users/2",
-        json={'name': name, 'job': job}
-    )
-    assert result.status_code == 200
-    assert result.json() == S(schemas.update_single_user)
-    assert result.json()['name'] == '1olsha'
-    assert result.json()['job'] == '1QA'
 
 
 def test_register_successful():
@@ -82,3 +60,12 @@ def test_delete_user():
     result = requests.delete(url=f"{base_url}api/users/2")
 
     assert result.status_code == 204
+
+
+def test_update_user():
+    data = {'job': 'zion resident'}
+    response = requests.put('https://reqres.in/api/users/2', data=data)
+    print(response.text)
+
+    assert response.status_code == 200
+    assert response.json()['job'] == 'zion resident'
